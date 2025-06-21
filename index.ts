@@ -7,10 +7,12 @@ const prisma = new PrismaClient(); // Initialize Prisma Client
 app.use(express.json());
 
 app.get("/users", async (_, res) => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    where: { isMarried: true, age: { gt: 30 } },
+  }); // Fetch all users from the database
   res.json(users);
 });
 
-app.listen(4000, () => {
-  console.log("Server running on port 4000");
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
