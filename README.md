@@ -38,9 +38,14 @@ Run `npx prisma db seed`
 ```
 app.get("/users", async (_, res) => {
   const users = await prisma.user.findMany({
-    where: { isMarried: true, age: { gt: 30 } },
+
+    where: { isMarried: true, age: { gt: 30 } }, // marry and > 30
+    where: { OR: [{ nationality: "American" }, { age: { gte: 30 } }] }, // American OR age >= 30
+    where: { AND: [{ nationality: "American" }, { age: { gte: 30 } }] }, // American AND age >= 30
+    where: { nationality: { not: "American" } }, // not American
+    where: { nationality: { in: ["American", "German"] } }, // Looking for users from specific nationalities
+
   }); // Fetch all users from the database
   res.json(users);
 });
-
 ```
